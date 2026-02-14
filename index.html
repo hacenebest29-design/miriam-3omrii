@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Will you be my Valentine? 💘</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{
+      margin:0;
+      height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family: Arial, Helvetica, sans-serif;
+      background:#ffd6e7;
+      overflow:hidden;
+    }
+    .card{
+      background:white;
+      padding:25px;
+      border-radius:20px;
+      text-align:center;
+      box-shadow:0 15px 30px rgba(0,0,0,.15);
+      max-width:350px;
+      width:90%;
+    }
+    h1{margin-bottom:10px}
+    p{color:#555}
+    img{
+      width:220px;
+      border-radius:15px;
+      margin:15px 0;
+    }
+    .buttons{
+      display:flex;
+      justify-content:center;
+      gap:15px;
+      margin-top:10px;
+    }
+    button{
+      padding:12px 20px;
+      border:none;
+      border-radius:25px;
+      cursor:pointer;
+      font-size:16px;
+      font-weight:bold;
+      transition:.2s;
+    }
+    #yes{
+      background:#ff5fa2;
+      color:white;
+      transform:scale(1);
+    }
+    #no{
+      background:#eee;
+    }
+    footer{
+      margin-top:15px;
+      font-size:12px;
+      color:#777;
+    }
+
+    /* success */
+    #success{
+      display:none;
+    }
+
+    canvas{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      display:none;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="card" id="card">
+  <div id="main">
+    <h1>Will you be my Valentine? 💘</h1>
+    <p>قولي نعم وما نطولش 😭👉👈</p>
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+    <div class="buttons">
+      <button id="yes">Yes 💖</button>
+      <button id="no">No 😒</button>
+    </div>
+    <footer>Made with ❤️</footer>
+  </div>
+
+  <div id="success">
+    <h1>Yaaay! 🥰</h1>
+    <p>i love u bzzzzzf bzzzf 3omrii💞</p>
+    <footer>Made with ❤️</footer>
+  </div>
+</div>
+
+<script>
+  const yes = document.getElementById("yes");
+  const no = document.getElementById("no");
+  const main = document.getElementById("main");
+  const success = document.getElementById("success");
+  const canvas = document.getElementById("confetti");
+  const ctx = canvas.getContext("2d");
+
+  let scale = 1;
+  let noCount = 0;
+
+  no.addEventListener("click", ()=>{
+    scale += 0.2;
+    yes.style.transform = 'scale(${scale})';
+
+    noCount++;
+    if(noCount >= 7){
+      no.textContent = "حبس 😭";
+    }
+
+    const x = Math.random()*(window.innerWidth-100);
+    const y = Math.random()*(window.innerHeight-50);
+    no.style.position="fixed";
+    no.style.left = x+"px";
+    no.style.top = y+"px";
+  });
+
+  yes.addEventListener("click", ()=>{
+    main.style.display="none";
+    success.style.display="block";
+    startConfetti();
+  });
+
+  /* simple confetti */
+  let confetti = [];
+  function startConfetti(){
+    canvas.style.display="block";
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    for(let i=0;i<150;i++){
+      confetti.push({
+        x:Math.random()*canvas.width,
+        y:Math.random()*canvas.height,
+        r:Math.random()*6+2,
+        dy:Math.random()*3+2
+      });
+    }
+    animate();
+  }
+
+  function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#ff5fa2";
+    confetti.forEach(c=>{
+      ctx.beginPath();
+      ctx.arc(c.x,c.y,c.r,0,Math.PI*2);
+      ctx.fill();
+      c.y+=c.dy;
+      if(c.y>canvas.height) c.y=0;
+    });
+    requestAnimationFrame(animate);
+  }
+</script>
+
+</body>
+</html>
